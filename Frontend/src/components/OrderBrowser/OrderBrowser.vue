@@ -5,11 +5,13 @@
     </div>
 
     <Search />
+    <DateFilter />
   </main>
 </template>
 
 <script>
 import Search from "./Search.vue";
+import DateFilter from "./DateFilter.vue";
 
 export default {
   name: "OrderBrowser",
@@ -18,6 +20,7 @@ export default {
   },
   components: {
     Search,
+    DateFilter,
   },
 };
 </script>
