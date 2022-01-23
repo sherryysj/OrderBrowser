@@ -6,12 +6,14 @@
 
     <Search />
     <DateFilter />
+    <OrderTable />
   </main>
 </template>
 
 <script>
 import Search from "./Search.vue";
 import DateFilter from "./DateFilter.vue";
+import OrderTable from "./OrderTable/OrderTable.vue";
 
 export default {
   name: "OrderBrowser",
@@ -21,6 +23,7 @@ export default {
   components: {
     Search,
     DateFilter,
+    OrderTable,
   },
 };
 </script>
