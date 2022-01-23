@@ -43,23 +43,9 @@
     </thead>
     <tbody>
       <LineOrder
-        orderName="number1"
-        customerName="Sherry"
-        customerCompany="company"
-        orderDate="1999-1-1"
-        :deliveredAmount="11.3"
-        :totalAmount="24"
-      />
-      <LineOrder
-        orderName="number1"
-        customerName="Sherry"
-        customerCompany="company"
-        orderDate="1999-1-1"
-        :deliveredAmount="11.3"
-        :totalAmount="24"
-      />
-      <LineOrder
-        orderName="number1"
+        v-for="order in orders"
+        v-bind:key="order"
+        :orderName="order.orderName"
         customerName="Sherry"
         customerCompany="company"
         orderDate="1999-1-1"
@@ -69,7 +55,7 @@
     </tbody>
   </table>
 
-  <PageControl :orderAmount=orderAmount @pageChange="onPageChange" />
+  <PageControl :orderAmount="orderAmount" @pageChange="onPageChange" />
 </template>
 
 <script>
@@ -81,7 +67,20 @@ export default {
   data: function () {
     return {
       sortUp: true,
-      orderAmount: 100
+      orderAmount: 100,
+      orders: [
+        { orderName: "Runoob" },
+        { orderName: "Google" },
+        { orderName: "Taobao" },
+        { orderName: "Taobao2" },
+        { orderName: "Taobao3" },
+        { orderName: "Taobao4" },
+        { orderName: "Taobao5" },
+        { orderName: "Taobao6" },
+        { orderName: "Taobao7" },
+        { orderName: "Taobao8" },
+        { orderName: "Taobao0" },
+      ],
     };
   },
   methods: {
