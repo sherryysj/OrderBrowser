@@ -15,8 +15,8 @@
       </svg>
     </div>
 
-    <div class="col" id="search-label">
-      <label>Search</label>
+    <div class="col" id="search-title">
+      <p style="margin-bottom: 0">Search</p>
     </div>
 
     <div class="col-sm" id="search-input">
@@ -45,7 +45,7 @@ export default {
 #search-icon {
   flex-grow: 0.01;
 }
-#search-label {
+#search-title {
   flex-grow: 0.01;
   font-weight: bold;
   font-size: 20px;
