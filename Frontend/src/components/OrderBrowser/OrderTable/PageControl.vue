@@ -15,7 +15,7 @@
         </select>
       </div>
       <div class="displayInRow" id="page-move">
-        <button class="page-buttons">
+        <button class="page-buttons" v-on:click="pageMinus()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -30,8 +30,8 @@
             />
           </svg>
         </button>
-        <p style="margin-bottom: 0">1</p>
-        <button class="page-buttons">
+        <p style="margin-bottom: 0">{{ page }}</p>
+        <button class="page-buttons" v-on:click="pagePlus()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -58,9 +58,32 @@
 <script>
 export default {
   props: {
-    orderAmount: Number,
+    orderAmount: {
+        type:Number,
+        default:50
+    }
+  },
+  data: function () {
+    return {
+      page: 1,
+      ordersPerPage: 5,
+    };
   },
   name: "PageControl",
+  methods: {
+    pageMinus() {
+      if (this.page > 1) {
+        this.page--;
+        this.$emit("pageChange", this.page);
+      }
+    },
+    pagePlus() {
+      if (this.page < this.orderAmount / this.ordersPerPage) {
+        this.page++;
+        this.$emit("pageChange", this.page);
+      }
+    },
+  },
 };
 </script>
 

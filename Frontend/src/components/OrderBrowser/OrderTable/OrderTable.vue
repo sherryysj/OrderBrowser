@@ -47,29 +47,29 @@
         customerName="Sherry"
         customerCompany="company"
         orderDate="1999-1-1"
-        deliveredAmount="11.3"
-        totalAmount="24"
+        :deliveredAmount="11.3"
+        :totalAmount="24"
       />
       <LineOrder
         orderName="number1"
         customerName="Sherry"
         customerCompany="company"
         orderDate="1999-1-1"
-        deliveredAmount="11.3"
-        totalAmount="24"
+        :deliveredAmount="11.3"
+        :totalAmount="24"
       />
       <LineOrder
         orderName="number1"
         customerName="Sherry"
         customerCompany="company"
         orderDate="1999-1-1"
-        deliveredAmount="11.3"
-        totalAmount="24"
+        :deliveredAmount="11.3"
+        :totalAmount="24"
       />
     </tbody>
   </table>
 
-  <PageControl orderAmount="50" />
+  <PageControl :orderAmount=orderAmount @pageChange="onPageChange" />
 </template>
 
 <script>
@@ -81,11 +81,15 @@ export default {
   data: function () {
     return {
       sortUp: true,
+      orderAmount: 100
     };
   },
   methods: {
     setSortup() {
       this.sortUp = !this.sortUp;
+    },
+    onPageChange(value) {
+      console.log(value);
     },
   },
   components: {
