@@ -1,9 +1,9 @@
 <template>
-  <OrderBrowser msg="Welcome to Order Browse Page" />
+  <OrderBrowser msg="Order Browsing Page" />
 </template>
 
 <script>
-import OrderBrowser from "./components/OrderBrowser.vue";
+import OrderBrowser from "./components/OrderBrowser/OrderBrowser.vue";
 
 export default {
   name: "App",
