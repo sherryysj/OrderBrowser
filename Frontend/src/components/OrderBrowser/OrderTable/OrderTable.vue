@@ -42,27 +42,21 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1,001</td>
-        <td>random</td>
-        <td>data</td>
-        <td>placeholder</td>
-        <td>text</td>
-        <td>text</td>
-      </tr>
-      <tr>
-        <td>1,002</td>
-        <td>placeholder</td>
-        <td>irrelevant</td>
-        <td>visual</td>
-        <td>layout</td>
-        <td>text</td>
-      </tr>
+      <LineOrder
+        orderName="number1"
+        customerName="Sherry"
+        customerCompany="company"
+        orderDate="1999-1-1"
+        deliveredAmount="11.3"
+        totalAmount="24"
+      />
     </tbody>
   </table>
 </template>
 
 <script>
+import LineOrder from "./LineOrder";
+
 export default {
   name: "OrderTable",
   data: function () {
@@ -74,6 +68,9 @@ export default {
     setSortup() {
       this.sortUp = !this.sortUp;
     },
+  },
+  components: {
+    LineOrder,
   },
 };
 </script>
