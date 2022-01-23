@@ -31,5 +31,7 @@ export default {
 <style>
 #title {
   padding-bottom: 20px;
+  width: 500px;
+  margin: auto;
 }
 </style>

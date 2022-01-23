@@ -22,5 +22,3 @@ export default {
   name: "LineOrder",
 };
 </script>
-
-<style></style>

@@ -50,12 +50,31 @@
         deliveredAmount="11.3"
         totalAmount="24"
       />
+      <LineOrder
+        orderName="number1"
+        customerName="Sherry"
+        customerCompany="company"
+        orderDate="1999-1-1"
+        deliveredAmount="11.3"
+        totalAmount="24"
+      />
+      <LineOrder
+        orderName="number1"
+        customerName="Sherry"
+        customerCompany="company"
+        orderDate="1999-1-1"
+        deliveredAmount="11.3"
+        totalAmount="24"
+      />
     </tbody>
   </table>
+
+  <PageControl orderAmount="50" />
 </template>
 
 <script>
 import LineOrder from "./LineOrder";
+import PageControl from "./PageControl";
 
 export default {
   name: "OrderTable",
@@ -71,6 +90,7 @@ export default {
   },
   components: {
     LineOrder,
+    PageControl,
   },
 };
 </script>
@@ -80,6 +100,7 @@ export default {
   width: 95%;
   margin: auto;
   margin-top: 30px;
+  margin-bottom: 10px;
 }
 #sortButton {
   padding: 0;
