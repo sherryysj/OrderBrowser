@@ -53,7 +53,7 @@
       </div>
       <div class="displayInRow">
         <p style="margin-bottom: 0">Go to</p>
-        <input id="page-input" />
+        <input id="page-input" @change="handlePageChange" />
       </div>
     </div>
   </div>
@@ -90,6 +90,12 @@ export default {
     handleOrdersPerPage(e) {
       var orders = e.target.value;
       this.$emit("ordersShownChange", orders);
+    },
+    handlePageChange(e) {
+      var page = e.target.value;
+      if (page > 0 && page <= this.orderAmount / this.ordersPerPage) {
+        this.page = page;
+      }
     },
   },
 };
