@@ -82,21 +82,26 @@ export default {
       }
     },
     pagePlus() {
-      if (this.page < this.orderAmount / this.ordersPerPage) {
+      if (this.page < this.countBiggestPage()) {
         this.page++;
         this.$emit("pageChange", this.page);
       }
     },
     handleOrdersPerPage(e) {
       var orders = e.target.value;
+      this.ordersPerPage = orders;
       this.$emit("ordersShownChange", orders);
     },
     handlePageChange(e) {
       var page = e.target.value;
-      if (page > 0 && page <= this.orderAmount / this.ordersPerPage) {
+      if (page > 0 && page <= this.countBiggestPage()) {
         this.page = page;
-        this.$emit("pageChange", page);
+        this.$emit("pageChange", this.page);
       }
+    },
+    countBiggestPage() {
+      var biggestPage = Math.ceil(this.orderAmount / this.ordersPerPage);
+      return biggestPage;
     },
   },
 };

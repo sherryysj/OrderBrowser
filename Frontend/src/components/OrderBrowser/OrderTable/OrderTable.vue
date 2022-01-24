@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <p id="total-amount">Total Amount: ${{ totalAmount }}</p>
+  </div>
   <table class="table table-striped table-sm" id="order-table">
     <thead>
       <tr>
@@ -43,7 +46,7 @@
     </thead>
     <tbody>
       <LineOrder
-        v-for="order in orders"
+        v-for="order in ordersDisplay"
         v-bind:key="order"
         :orderName="order.orderName"
         customerName="Sherry"
@@ -54,39 +57,57 @@
       />
     </tbody>
   </table>
+  <PageControl
+    :orderAmount="orders.length"
+    @pageChange="onPageChange"
+    @ordersShownChange="onOrdersShownChange"
+  />
 </template>
 
 <script>
 import LineOrder from "./LineOrder";
+import PageControl from "./PageControl.vue";
 
 export default {
   name: "OrderTable",
+  props: {
+    orders: Array,
+  },
   data: function () {
     return {
       sortUp: true,
       orderAmount: 100,
-      orders: [
-        { orderName: "Runoob" },
-        { orderName: "Google" },
-        { orderName: "Taobao" },
-        { orderName: "Taobao2" },
-        { orderName: "Taobao3" },
-        { orderName: "Taobao4" },
-        { orderName: "Taobao5" },
-        { orderName: "Taobao6" },
-        { orderName: "Taobao7" },
-        { orderName: "Taobao8" },
-        { orderName: "Taobao0" },
-      ],
+      page: 1,
+      ordersPerPage: 5,
+      totalAmount: 100,
+      ordersDisplay: [],
     };
   },
   methods: {
     setSortup() {
       this.sortUp = !this.sortUp;
     },
+    onPageChange(value) {
+      this.page = value;
+      console.log(this.ordersPerPage);
+      this.setOrderDisplay(this.page, this.ordersPerPage);
+    },
+    onOrdersShownChange(value) {
+      this.ordersPerPage = value;
+      this.setOrderDisplay(this.page, this.ordersPerPage);
+    },
+    setOrderDisplay(page, ordersPerPage) {
+      var startIndex = ordersPerPage * (page - 1);
+      var endIndex = ordersPerPage * page;
+      this.ordersDisplay = this.orders.slice(startIndex, endIndex);
+    },
+  },
+  created: function () {
+    this.setOrderDisplay(1, 5);
   },
   components: {
     LineOrder,
+    PageControl,
   },
 };
 </script>
@@ -102,5 +123,12 @@ export default {
   padding: 0;
   border: none;
   background-color: #fff;
+}
+#total-amount {
+  text-align: left;
+  margin-left: 50px;
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-weight: bold;
 }
 </style>

@@ -8,16 +8,7 @@
 
     <DateFilter />
 
-    <div>
-      <p id="total-amount">Total Amount: ${{ totalAmount }}</p>
-    </div>
-
-    <OrderTable />
-    <PageControl
-      :orderAmount="orderAmount"
-      @pageChange="onPageChange"
-      @ordersShownChange="onOrdersShownChange"
-    />
+    <OrderTable :orders="ordersFiltered" />
   </main>
 </template>
 
@@ -25,7 +16,6 @@
 import Search from "./Search.vue";
 import DateFilter from "./DateFilter.vue";
 import OrderTable from "./OrderTable/OrderTable.vue";
-import PageControl from "./PageControl.vue";
 
 export default {
   name: "OrderBrowser",
@@ -36,26 +26,38 @@ export default {
     Search,
     DateFilter,
     OrderTable,
-    PageControl,
   },
   data: function () {
     return {
-      totalAmount: 100,
-      orderAmount: 100,
-      page: 1,
-      ordersPerPage: 5,
       search: "",
+      orders: [
+        { orderName: "Runoob" },
+        { orderName: "Google" },
+        { orderName: "Taobao" },
+        { orderName: "Taobao2" },
+        { orderName: "Taobao3" },
+        { orderName: "Taobao4" },
+        { orderName: "Taobao5" },
+        { orderName: "Taobao6" },
+        { orderName: "Taobao7" },
+        { orderName: "Taobao8" },
+        { orderName: "Taobao0" },
+      ],
+      ordersFiltered: [
+        { orderName: "Runoob" },
+        { orderName: "Google" },
+        { orderName: "Taobao" },
+        { orderName: "Taobao2" },
+        { orderName: "Taobao3" },
+        { orderName: "Taobao4" },
+        { orderName: "Taobao5" },
+      ],
     };
   },
   methods: {
-    onPageChange(value) {
-      this.page = value;
-    },
-    onOrdersShownChange(value) {
-      this.ordersPerPage = value;
-    },
     onSearchChange(value) {
       this.search = value;
+      // call orders filter
     },
   },
 };
@@ -66,12 +68,5 @@ export default {
   padding-bottom: 20px;
   width: 500px;
   margin: auto;
-}
-#total-amount {
-  text-align: left;
-  margin-left: 50px;
-  margin-top: 10px;
-  margin-bottom: 0;
-  font-weight: bold;
 }
 </style>
