@@ -89,21 +89,23 @@ export default {
     },
     onPageChange(value) {
       this.page = value;
-      console.log(this.ordersPerPage);
-      this.setOrderDisplay(this.page, this.ordersPerPage);
+      // reset orders display every time page change
+      this.setOrdersDisplay();
     },
     onOrdersShownChange(value) {
       this.ordersPerPage = value;
-      this.setOrderDisplay(this.page, this.ordersPerPage);
+      // reset orders display every time orders per page change
+      this.setOrdersDisplay();
     },
-    setOrderDisplay(page, ordersPerPage) {
-      var startIndex = ordersPerPage * (page - 1);
-      var endIndex = ordersPerPage * page;
+    // set orders displayed in current page according to page and orders per page
+    setOrdersDisplay() {
+      var startIndex = this.ordersPerPage * (this.page - 1);
+      var endIndex = this.ordersPerPage * this.page;
       this.ordersDisplay = this.orders.slice(startIndex, endIndex);
     },
   },
   created: function () {
-    this.setOrderDisplay(1, 5);
+    this.setOrdersDisplay();
   },
   components: {
     LineOrder,

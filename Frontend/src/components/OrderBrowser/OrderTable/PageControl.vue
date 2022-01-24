@@ -76,32 +76,40 @@ export default {
   name: "PageControl",
   methods: {
     pageMinus() {
+      // only minus page value when page bigger than 1
       if (this.page > 1) {
         this.page--;
         this.$emit("pageChange", this.page);
       }
     },
     pagePlus() {
-      if (this.page < this.countBiggestPage()) {
+      // only plus page value when page smaller than max page
+      if (this.page < this.countMaxPage()) {
         this.page++;
         this.$emit("pageChange", this.page);
       }
     },
     handleOrdersPerPage(e) {
-      var orders = e.target.value;
-      this.ordersPerPage = orders;
-      this.$emit("ordersShownChange", orders);
+      var ordersNumber = e.target.value;
+      this.ordersPerPage = ordersNumber;
+      // if orders shown per page more than order amount, reset and jump to page 1
+      if (this.ordersPerPage >= this.orderAmount) {
+        this.page = 1;
+        this.$emit("pageChange", this.page);
+      }
+      this.$emit("ordersShownChange", this.ordersPerPage);
     },
     handlePageChange(e) {
       var page = e.target.value;
-      if (page > 0 && page <= this.countBiggestPage()) {
+      // only change page value when page input bigger than 0 and smaller or equal to max page
+      if (page > 0 && page <= this.countMaxPage()) {
         this.page = page;
         this.$emit("pageChange", this.page);
       }
     },
-    countBiggestPage() {
-      var biggestPage = Math.ceil(this.orderAmount / this.ordersPerPage);
-      return biggestPage;
+    countMaxPage() {
+      var maxPage = Math.ceil(this.orderAmount / this.ordersPerPage);
+      return maxPage;
     },
   },
 };
