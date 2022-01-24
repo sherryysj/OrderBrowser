@@ -25,6 +25,7 @@
           class="form-control"
           id="search-input"
           placeholder="search the order here"
+          @change="handleChange"
         />
       </form>
     </div>
@@ -34,6 +35,12 @@
 <script>
 export default {
   name: "Search",
+  methods: {
+    handleChange(e) {
+      var search = e.target.value;
+      this.$emit("searchChange", search);
+    },
+  },
 };
 </script>
 

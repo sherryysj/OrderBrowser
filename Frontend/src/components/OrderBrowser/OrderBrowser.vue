@@ -4,7 +4,7 @@
       <h1>{{ msg }}</h1>
     </div>
 
-    <Search />
+    <Search @searchChange="onSearchChange" />
 
     <DateFilter />
 
@@ -44,6 +44,7 @@ export default {
       orderAmount: 100,
       page: 1,
       ordersPerPage: 5,
+      search: "",
     };
   },
   methods: {
@@ -52,6 +53,9 @@ export default {
     },
     onOrdersShownChange(value) {
       this.ordersPerPage = value;
+    },
+    onSearchChange(value) {
+      this.search = value;
     },
   },
 };
