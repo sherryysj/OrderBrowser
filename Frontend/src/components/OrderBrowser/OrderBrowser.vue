@@ -5,7 +5,13 @@
     </div>
 
     <Search />
+
     <DateFilter />
+
+    <div>
+      <p id="total-amount">Total Amount: ${{ totalAmount }}</p>
+    </div>
+
     <OrderTable />
   </main>
 </template>
@@ -25,6 +31,11 @@ export default {
     DateFilter,
     OrderTable,
   },
+  data: function () {
+    return {
+      totalAmount: 100,
+    };
+  },
 };
 </script>
 
@@ -33,5 +44,12 @@ export default {
   padding-bottom: 20px;
   width: 500px;
   margin: auto;
+}
+#total-amount {
+  text-align: left;
+  margin-left: 50px;
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-weight: bold;
 }
 </style>
