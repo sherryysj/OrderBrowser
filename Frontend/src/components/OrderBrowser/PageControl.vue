@@ -95,6 +95,7 @@ export default {
       var page = e.target.value;
       if (page > 0 && page <= this.orderAmount / this.ordersPerPage) {
         this.page = page;
+        this.$emit("pageChange", page);
       }
     },
   },
