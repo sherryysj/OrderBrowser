@@ -6,7 +6,11 @@
     <div class="displayInRow" id="page-controls">
       <div class="displayInRow" id="orderPerPage">
         <p style="margin-bottom: 0">Orders per page:</p>
-        <select name="orderPerPage" style="margin-left: 10px">
+        <select
+          name="orderPerPage"
+          style="margin-left: 10px"
+          @change="handleOrdersPerPage"
+        >
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
@@ -59,9 +63,9 @@
 export default {
   props: {
     orderAmount: {
-        type:Number,
-        default:50
-    }
+      type: Number,
+      default: 50,
+    },
   },
   data: function () {
     return {
@@ -82,6 +86,10 @@ export default {
         this.page++;
         this.$emit("pageChange", this.page);
       }
+    },
+    handleOrdersPerPage(e) {
+      var orders = e.target.value;
+      this.$emit("ordersShownChange", orders);
     },
   },
 };

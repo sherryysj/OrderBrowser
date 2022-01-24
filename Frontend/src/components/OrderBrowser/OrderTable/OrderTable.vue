@@ -54,13 +54,10 @@
       />
     </tbody>
   </table>
-
-  <PageControl :orderAmount="orderAmount" @pageChange="onPageChange" />
 </template>
 
 <script>
 import LineOrder from "./LineOrder";
-import PageControl from "./PageControl";
 
 export default {
   name: "OrderTable",
@@ -87,13 +84,9 @@ export default {
     setSortup() {
       this.sortUp = !this.sortUp;
     },
-    onPageChange(value) {
-      console.log(value);
-    },
   },
   components: {
     LineOrder,
-    PageControl,
   },
 };
 </script>

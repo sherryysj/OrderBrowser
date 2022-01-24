@@ -13,6 +13,11 @@
     </div>
 
     <OrderTable />
+    <PageControl
+      :orderAmount="orderAmount"
+      @pageChange="onPageChange"
+      @ordersShownChange="onOrdersShownChange"
+    />
   </main>
 </template>
 
@@ -20,6 +25,7 @@
 import Search from "./Search.vue";
 import DateFilter from "./DateFilter.vue";
 import OrderTable from "./OrderTable/OrderTable.vue";
+import PageControl from "./PageControl.vue";
 
 export default {
   name: "OrderBrowser",
@@ -30,11 +36,23 @@ export default {
     Search,
     DateFilter,
     OrderTable,
+    PageControl,
   },
   data: function () {
     return {
       totalAmount: 100,
+      orderAmount: 100,
+      page: 1,
+      ordersPerPage: 5,
     };
+  },
+  methods: {
+    onPageChange(value) {
+      this.page = value;
+    },
+    onOrdersShownChange(value) {
+      this.ordersPerPage = value;
+    },
   },
 };
 </script>
