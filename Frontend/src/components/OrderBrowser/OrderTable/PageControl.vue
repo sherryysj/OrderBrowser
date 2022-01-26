@@ -54,6 +54,7 @@
       <div class="displayInRow">
         <p style="margin-bottom: 0">Go to</p>
         <input id="page-input" @change="handlePageChange" />
+        <p style="margin-bottom: 0">Total Page: {{ countMaxPage() }}</p>
       </div>
     </div>
   </div>
@@ -137,9 +138,10 @@ export default {
 #page-input {
   width: 50px;
   margin-left: 10px;
+  margin-right: 10px;
 }
 #orderPerPage {
-  margin-left: -70px;
+  margin-left: 20px;
   margin-right: 20px;
 }
 </style>
