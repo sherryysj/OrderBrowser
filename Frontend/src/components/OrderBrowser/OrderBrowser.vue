@@ -16,6 +16,7 @@
 import Search from "./Search.vue";
 import DateFilter from "./DateFilter.vue";
 import OrderTable from "./OrderTable/OrderTable.vue";
+import axios from "axios";
 
 export default {
   name: "OrderBrowser",
@@ -58,6 +59,18 @@ export default {
     onSearchChange(value) {
       this.search = value;
       // call orders filter
+      axios({
+        method: "POST",
+        url: "http://127.0.0.1:8090/handler",
+        data: this.search,
+        headers: { "content-type": "text/plain" },
+      })
+        .then((result) => {
+          console.log(result.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
 };
