@@ -4,7 +4,7 @@
       <h1>{{ msg }}</h1>
     </div>
 
-    <Search @searchChange="onSearchChange" />
+    <SearchFilter @searchChange="onSearchChange" />
 
     <DateFilter />
 
@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import Search from "./Search.vue";
-import DateFilter from "./DateFilter.vue";
+import SearchFilter from "./Filters/SearchFilter.vue";
+import DateFilter from "./Filters/DateFilter.vue";
 import OrderTable from "./OrderTable/OrderTable.vue";
 import axios from "axios";
 
@@ -24,7 +24,7 @@ export default {
     msg: String,
   },
   components: {
-    Search,
+    SearchFilter,
     DateFilter,
     OrderTable,
   },
