@@ -71,7 +71,7 @@ func setPostgreSqlDB(database string, name string) {
 
 			itemsAmount := len(titles)
 
-			// below code need to improved
+			// below code need to improve
 			switch itemsAmount {
 			case 1:
 				res, err := stmt.Exec(NewNullString(row[0]))
