@@ -4,9 +4,21 @@
       <p id="date-title-text">Create Date</p>
     </div>
     <div class="row" id="date-input">
-      <input type="date" class="col" id="date-input-start" />
+      <input
+        type="date"
+        class="col"
+        id="date-input-start"
+        :max="endDate"
+        @change="handleStartDateChange"
+      />
       <p class="col" id="date-to">-</p>
-      <input type="date" class="col" id="date-input-end" />
+      <input
+        type="date"
+        class="col"
+        id="date-input-end"
+        :min="startDate"
+        @change="handleEndDateChange"
+      />
     </div>
   </div>
 </template>
@@ -14,6 +26,22 @@
 <script>
 export default {
   name: "DateFilter",
+  data: function () {
+    return {
+      startDate: "",
+      endDate: "",
+    };
+  },
+  methods: {
+    handleStartDateChange(e) {
+      this.startDate = e.target.value;
+      this.$emit("startDateChange", this.startDate);
+    },
+    handleEndDateChange(e) {
+      this.endDate = e.target.value;
+      this.$emit("endDateChange", this.endDate);
+    },
+  },
 };
 </script>
 

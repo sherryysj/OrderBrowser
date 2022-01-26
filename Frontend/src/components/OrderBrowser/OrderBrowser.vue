@@ -6,7 +6,10 @@
 
     <SearchFilter @searchChange="onSearchChange" />
 
-    <DateFilter />
+    <DateFilter
+      @startDateChange="onStartDateChange"
+      @endDateChange="onEndDateChange"
+    />
 
     <OrderTable :orders="ordersFiltered" />
   </main>
@@ -31,6 +34,8 @@ export default {
   data: function () {
     return {
       search: "",
+      startDate: "",
+      endDate: "",
       orders: [
         { orderName: "Runoob", orderDate: "1991-1-1" },
         { orderName: "Google", orderDate: "1991-1-2" },
@@ -71,6 +76,15 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+    },
+    onStartDateChange(value) {
+      this.startDate = value;
+      console.log(this.startDate);
+    },
+    onEndDateChange(value) {
+      // must later than start date
+      this.endDate = value;
+      console.log(this.endDate);
     },
   },
 };
