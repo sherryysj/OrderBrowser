@@ -74,31 +74,31 @@ func setPostgreSqlDB(database string, name string) {
 			// below code need to improved
 			switch itemsAmount {
 			case 1:
-				res, err := stmt.Exec(row[0])
+				res, err := stmt.Exec(NewNullString(row[0]))
 				checkErr(err)
 				fmt.Println(res)
 			case 2:
-				res, err := stmt.Exec(row[0], row[1])
+				res, err := stmt.Exec(NewNullString(row[0]), NewNullString(row[1]))
 				checkErr(err)
 				fmt.Println(res)
 			case 3:
-				res, err := stmt.Exec(row[0], row[1], row[2])
+				res, err := stmt.Exec(NewNullString(row[0]), NewNullString(row[1]), NewNullString(row[2]))
 				checkErr(err)
 				fmt.Println(res)
 			case 4:
-				res, err := stmt.Exec(row[0], row[1], row[2], row[3])
+				res, err := stmt.Exec(NewNullString(row[0]), NewNullString(row[1]), NewNullString(row[2]), NewNullString(row[3]))
 				checkErr(err)
 				fmt.Println(res)
 			case 5:
-				res, err := stmt.Exec(row[0], row[1], row[2], row[3], row[4])
+				res, err := stmt.Exec(NewNullString(row[0]), NewNullString(row[1]), NewNullString(row[2]), NewNullString(row[3]), NewNullString(row[4]))
 				checkErr(err)
 				fmt.Println(res)
 			case 6:
-				res, err := stmt.Exec(row[0], row[1], row[2], row[3], row[4], row[5])
+				res, err := stmt.Exec(NewNullString(row[0]), NewNullString(row[1]), NewNullString(row[2]), NewNullString(row[3]), NewNullString(row[4]), NewNullString(row[5]))
 				checkErr(err)
 				fmt.Println(res)
 			case 7:
-				res, err := stmt.Exec(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+				res, err := stmt.Exec(NewNullString(row[0]), NewNullString(row[1]), NewNullString(row[2]), NewNullString(row[3]), NewNullString(row[4]), NewNullString(row[5]), NewNullString(row[6]))
 				checkErr(err)
 				fmt.Println(res)
 			}
@@ -130,5 +130,15 @@ func readCsvData(filePath string) [][]string {
 func checkErr(err error) {
 	if err != nil {
 		panic(err)
+	}
+}
+
+func NewNullString(s string) sql.NullString {
+	if len(s) == 0 {
+		return sql.NullString{}
+	}
+	return sql.NullString{
+		String: s,
+		Valid:  true,
 	}
 }
