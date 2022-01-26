@@ -51,7 +51,7 @@
         :orderName="order.orderName"
         customerName="Sherry"
         customerCompany="company"
-        orderDate="1999-1-1"
+        :orderDate="order.orderDate"
         :deliveredAmount="11.3"
         :totalAmount="24"
       />
@@ -81,11 +81,26 @@ export default {
       ordersPerPage: 5,
       totalAmount: 100,
       ordersDisplay: [],
+      orderSort: [],
     };
   },
   methods: {
     setSortup() {
       this.sortUp = !this.sortUp;
+      this.orderSort = this.orders;
+      // mutate orders through reference
+      if (this.sortUp) {
+        this.orderSort.sort(
+          (order1, order2) =>
+            new Date(order1.orderDate) - new Date(order2.orderDate)
+        );
+      } else {
+        this.orderSort.sort(
+          (order1, order2) =>
+            new Date(order2.orderDate) - new Date(order1.orderDate)
+        );
+      }
+      this.setOrdersDisplay();
     },
     onPageChange(value) {
       this.page = value;
