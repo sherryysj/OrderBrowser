@@ -63,11 +63,23 @@ export default {
   methods: {
     onSearchChange(value) {
       this.search = value;
-      // call orders filter
+      this.callServerFilter();
+    },
+    onStartDateChange(value) {
+      this.startDate = value;
+      this.callServerFilter();
+    },
+    onEndDateChange(value) {
+      // must later than start date
+      this.endDate = value;
+      this.callServerFilter();
+    },
+    callServerFilter() {
+      var data = [this.search, this.startDate, this.endDate];
       axios({
         method: "POST",
-        url: "http://127.0.0.1:8090/handler",
-        data: this.search,
+        url: "http://127.0.0.1:8090/filter",
+        data: data,
         headers: { "content-type": "text/plain" },
       })
         .then((result) => {
@@ -76,15 +88,6 @@ export default {
         .catch((error) => {
           console.error(error);
         });
-    },
-    onStartDateChange(value) {
-      this.startDate = value;
-      console.log(this.startDate);
-    },
-    onEndDateChange(value) {
-      // must later than start date
-      this.endDate = value;
-      console.log(this.endDate);
     },
   },
 };
