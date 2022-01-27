@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "Search",
+  name: "SearchFilter",
   methods: {
     handleChange(e) {
       var search = e.target.value;

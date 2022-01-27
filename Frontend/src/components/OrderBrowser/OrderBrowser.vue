@@ -4,18 +4,22 @@
       <h1>{{ msg }}</h1>
     </div>
 
-    <Search @searchChange="onSearchChange" />
+    <SearchFilter @searchChange="onSearchChange" />
 
-    <DateFilter />
+    <DateFilter
+      @startDateChange="onStartDateChange"
+      @endDateChange="onEndDateChange"
+    />
 
     <OrderTable :orders="ordersFiltered" />
   </main>
 </template>
 
 <script>
-import Search from "./Search.vue";
-import DateFilter from "./DateFilter.vue";
+import SearchFilter from "./Filters/SearchFilter.vue";
+import DateFilter from "./Filters/DateFilter.vue";
 import OrderTable from "./OrderTable/OrderTable.vue";
+import axios from "axios";
 
 export default {
   name: "OrderBrowser",
@@ -23,13 +27,15 @@ export default {
     msg: String,
   },
   components: {
-    Search,
+    SearchFilter,
     DateFilter,
     OrderTable,
   },
   data: function () {
     return {
       search: "",
+      startDate: "",
+      endDate: "",
       orders: [
         { orderName: "Runoob", orderDate: "1991-1-1" },
         { orderName: "Google", orderDate: "1991-1-2" },
@@ -57,7 +63,31 @@ export default {
   methods: {
     onSearchChange(value) {
       this.search = value;
-      // call orders filter
+      this.callServerFilter();
+    },
+    onStartDateChange(value) {
+      this.startDate = value;
+      this.callServerFilter();
+    },
+    onEndDateChange(value) {
+      // must later than start date
+      this.endDate = value;
+      this.callServerFilter();
+    },
+    callServerFilter() {
+      var data = [this.search, this.startDate, this.endDate];
+      axios({
+        method: "POST",
+        url: "http://127.0.0.1:8090/filter",
+        data: data,
+        headers: { "content-type": "text/plain" },
+      })
+        .then((result) => {
+          console.log(result.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
 };
