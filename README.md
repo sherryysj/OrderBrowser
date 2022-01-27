@@ -84,3 +84,5 @@ npm run serve
 4. Retrive data method in Backend/server.go could put in a seperate dababase manager file for a better quality of code management
 
 5. A loading data message can be add to the page when data is loading
+
+6. Orders per page auto reset to 5 every time using filter to retrive new data, it should be keep what user choose if user does not reload the App
