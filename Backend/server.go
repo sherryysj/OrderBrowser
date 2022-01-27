@@ -6,11 +6,9 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"io"
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -32,8 +30,10 @@ type Order struct {
 	TotalAmount     float64 `json:"totalAmount"`
 }
 
-type OrderArray struct {
-	orders []Order `json:"orders"`
+type requestData struct {
+	Search    string `json:"search"`
+	StartDate string `json:"startDate"`
+	EndDate   string `json:"endDate"`
 }
 
 func main() {
@@ -42,20 +42,17 @@ func main() {
 }
 
 func filter(w http.ResponseWriter, r *http.Request) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	// process data pass from frent end
-	// improve below code by set json request from front end
-	data := strings.Split(string(body), ",")
-	search := data[0][2:(len(data[0]) - 1)]
-	startDate := data[1][1:(len(data[1]) - 1)]
-	endDate := data[2][1:(len(data[2]) - 2)]
+	// process data pass from front end
+	decoder := json.NewDecoder(r.Body)
 
-	dataRespond := retriveData(search, startDate, endDate)
+	var data requestData
+	decoder.Decode(&data)
 
+	// retrive data from database
+	dataRespond := retriveData(data.Search, data.StartDate, data.EndDate)
+
+	// respond date to front end
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)

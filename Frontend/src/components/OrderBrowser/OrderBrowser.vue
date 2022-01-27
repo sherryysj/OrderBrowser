@@ -57,7 +57,11 @@ export default {
       this.callServerFilter();
     },
     callServerFilter() {
-      var data = [this.search, this.startDate, this.endDate];
+      var data = {
+        search: this.search,
+        startDate: this.startDate,
+        endDate: this.endDate,
+      };
       axios({
         method: "POST",
         url: "http://127.0.0.1:8090/filter",
