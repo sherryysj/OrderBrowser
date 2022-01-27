@@ -101,17 +101,21 @@ func retriveData(search string, startDate string, endDate string) []Order {
 	checkErr(err)
 
 	// set query string for sql database
-	queryString := "select A.customer_id, A.order_name, B.product, A.created_at, C.delivered_quantity*B.PRICE_PER_UNIT AS Deliveried_Amount, B.price_per_unit*B.quantity AS Total_Amount from orders A inner join order_items B on A.id=B.order_id inner join deliveries C on B.id=C.order_item_id"
-	//countString := "select count(*) from orders A inner join order_items B on A.id=B.order_id inner join deliveries C on B.id=C.order_item_id"
+	// code quality improve: put these query string into an independent file and read string from that file
+	queryString1 := "select C.customer_id, C.order_name, C.product, C.created_at, D.delivered_quantity*C.PRICE_PER_UNIT AS Deliveried_Amount, C.price_per_unit*C.quantity AS Total_Amount "
+	queryString2 := "from (select A.customer_id, A.order_name, B.product, A.created_at, B.price_per_unit, B.quantity, B.id from orders A, order_items B where A.id=B.order_id) C "
+	queryString3 := "left join (select order_item_id, sum(delivered_quantity) As delivered_quantity from deliveries group by order_item_id) D on C.id=D.order_item_id"
+	queryString := queryString1 + queryString2 + queryString3
 
+	orderString := " order by C.order_name"
 	if search != "" {
-		searchString := "UPPER(A.order_name) LIKE Upper('%" + search + "%') or UPPER(B.product) LIKE Upper('%" + search + "%') "
-		queryString += " where " + searchString
+		searchString := " where UPPER(c.order_name) LIKE Upper('%" + search + "%') or UPPER(C.product) LIKE Upper('%" + search + "%')"
+		queryString += searchString
 	}
 
 	if startDate != "" {
-		startDateString := "CAST(A.created_at AS date) > CAST('" + startDate + "' AS date)"
-		endDateString := "CAST(A.created_at AS date) < CAST('" + endDate + "' AS date)"
+		startDateString := "CAST(C.created_at AS date) >= CAST('" + startDate + "' AS date) AT TIME ZONE 'UTC'"
+		endDateString := "CAST(C.created_at AS date) <= CAST('" + endDate + "' AS date) AT TIME ZONE 'UTC'"
 		if search == "" && endDate == "" {
 			queryString += " where " + startDateString
 		} else if search != "" && endDate == "" {
@@ -121,7 +125,16 @@ func retriveData(search string, startDate string, endDate string) []Order {
 		} else {
 			queryString += " AND " + startDateString + " AND " + endDateString
 		}
+	} else {
+		endDateString := "CAST(C.created_at AS date) <= CAST('" + endDate + "' AS date) AT TIME ZONE 'UTC'"
+		if search == "" && endDate != "" {
+			queryString += " where " + endDateString
+		} else if search != "" && endDate != "" {
+			queryString += " AND " + endDateString
+		}
 	}
+
+	queryString += orderString
 
 	// get data from sql database for order info
 	orders := []Order{}
