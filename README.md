@@ -1,4 +1,5 @@
-# orderbrowser
+# Order Browser
+Web Application based on Vue.js and Golang
 
 ## Project setup steps
 
@@ -26,7 +27,7 @@ call python file in command line by "python DataManager.py start #arg1 #arg2"
 command example: python DataManager.py start Mongo Orders
 ```
 
-### PostSQL
+### PostgreSQL
 
 1. host a PostgresSQL database through pgAdmin (https://www.pgadmin.org/)
 2. direct to Backend/postgreSQL folder and copy scripts in DatabaseGenerator.sql file to paAdmin script board to generate tables
@@ -44,29 +45,42 @@ because of foreign key, sql data must insert in following order "1. orders, 2. o
 
 ## Backend setup
 
-### running server
+run below code in command line at Backend folder
+
+### Running server
 
 ```
 go run server.go
 ```
 
-## Frontend
+## Frontend setup
 
-### Install (for first time running this project on your computer)
+run below code in command line at Fackend folder
+
+### Install App
+
+for first time running this project on your computer
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Run frontend app server
 
 ```
 npm run serve
 ```
 
-### Drawbacks
+## What can be improved ( at this weekend )
 
-1. I use a function to auto-insert data from different files, it is hard to configue which data are numbers and which are stings,
+1. I use a function to auto-insert data from different files, so it is hard to configue which data are numbers and which are stings,
    this causes data inserted into MongoDB are all strings, I am still trying to find a way to convert data to proper type without
    checking the each data file and write different code to convert data type for them
+   
 2. PostgresSQL data insert code (Line 74 to 104 in Backend/src/DataManager.go) should be improved to make it more efficiency
+
+3. SQL query string (Line 102 to 132 in Backend/server.go) could be put in a separate file and read in when needed
+
+4. Retrive data method in Backend/server.go could put in a seperate dababase manager file for a better quality of code management
+
+5. A loading data message can be add to the page when data is loading
