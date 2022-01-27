@@ -114,8 +114,8 @@ func retriveData(search string, startDate string, endDate string) []Order {
 	}
 
 	if startDate != "" {
-		startDateString := "CAST(C.created_at AS date) >= CAST('" + startDate + "' AS date)"
-		endDateString := "CAST(C.created_at AS date) <= CAST('" + endDate + "' AS date)"
+		startDateString := "CAST(C.created_at AS date) >= CAST('" + startDate + "' AS date) AT TIME ZONE 'UTC'"
+		endDateString := "CAST(C.created_at AS date) <= CAST('" + endDate + "' AS date) AT TIME ZONE 'UTC'"
 		if search == "" && endDate == "" {
 			queryString += " where " + startDateString
 		} else if search != "" && endDate == "" {
@@ -124,6 +124,13 @@ func retriveData(search string, startDate string, endDate string) []Order {
 			queryString += " where " + startDateString + " AND " + endDateString
 		} else {
 			queryString += " AND " + startDateString + " AND " + endDateString
+		}
+	} else {
+		endDateString := "CAST(C.created_at AS date) <= CAST('" + endDate + "' AS date) AT TIME ZONE 'UTC'"
+		if search == "" && endDate != "" {
+			queryString += " where " + endDateString
+		} else if search != "" && endDate != "" {
+			queryString += " AND " + endDateString
 		}
 	}
 

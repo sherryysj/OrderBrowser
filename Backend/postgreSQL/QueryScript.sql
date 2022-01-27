@@ -9,9 +9,9 @@ on C.id=D.order_item_id
 -- filter according to user search input
 where UPPER(c.order_name) LIKE Upper('%box%') or UPPER(C.product) LIKE Upper('%box%') 
 -- select according to user start data input
-and CAST(C.created_at AS date) >= CAST('2020-1-5' AS date)
+and CAST(C.created_at AS date) >= CAST('2020-1-5' AS date) AT TIME ZONE 'UTC'
 -- select according to user end data input
-and CAST(C.created_at AS date) <= CAST('2021-1-6' AS date)
+and CAST(C.created_at AS date) <= CAST('2021-1-6' AS date) AT TIME ZONE 'UTC'
 -- sort by order name for easy reading 
 order by C.order_name
 
@@ -21,5 +21,5 @@ from (select A.customer_id, A.order_name, B.product, A.created_at, B.price_per_u
 left join (select order_item_id, sum(delivered_quantity) As delivered_quantity from deliveries group by order_item_id) D
 on C.id=D.order_item_id
 where UPPER(c.order_name) LIKE Upper('%box%') or UPPER(C.product) LIKE Upper('%box%') 
-and CAST(C.created_at AS date) >= CAST('2020-1-5' AS date)
-and CAST(C.created_at AS date) <= CAST('2021-1-6' AS date);
+and CAST(C.created_at AS date) >= CAST('2020-1-5' AS date) AT TIME ZONE 'UTC'
+and CAST(C.created_at AS date) <= CAST('2021-1-6' AS date) AT TIME ZONE 'UTC'
