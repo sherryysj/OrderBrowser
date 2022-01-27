@@ -7,8 +7,8 @@
     <td>{{ customerCompany }}</td>
     <td>{{ customerName }}</td>
     <td>{{ orderDate }}</td>
-    <td>${{ deliveredAmount }}</td>
-    <td>${{ totalAmount }}</td>
+    <td>{{ deliveredAmountString() }}</td>
+    <td>{{ totalAmountString() }}</td>
   </tr>
 </template>
 
@@ -22,6 +22,24 @@ export default {
     orderDate: String,
     deliveredAmount: Number,
     totalAmount: Number,
+  },
+  methods: {
+    deliveredAmountString() {
+      if (this.deliveredAmount == 0) {
+        return "/";
+      } else {
+        var string = "$" + this.deliveredAmount.toFixed(4);
+        return string;
+      }
+    },
+    totalAmountString() {
+      if (this.totalAmount == 0) {
+        return "Not available without unit price";
+      } else {
+        var string = "$" + this.totalAmount.toFixed(4);
+        return string;
+      }
+    },
   },
   name: "LineOrder",
 };

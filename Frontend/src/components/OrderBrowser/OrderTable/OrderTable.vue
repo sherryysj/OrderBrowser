@@ -130,7 +130,7 @@ export default {
       for (let i = 0; i < this.orders.length; i++) {
         totalAmount += this.orders[i].totalAmount;
       }
-      return totalAmount;
+      return totalAmount.toFixed(4);
     },
   },
   created: function () {
