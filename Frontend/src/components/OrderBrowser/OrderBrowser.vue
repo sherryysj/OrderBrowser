@@ -4,14 +4,14 @@
       <h1>{{ msg }}</h1>
     </div>
 
-    <SearchFilter @searchChange="onSearchChange" />
+    <SearchFilter @searchChange="onSearchChange" @submit.prevent="" />
 
     <DateFilter
       @startDateChange="onStartDateChange"
       @endDateChange="onEndDateChange"
     />
 
-    <OrderTable :orders="ordersFiltered" />
+    <OrderTable :orders="orders" v-bind:key="orders" />
   </main>
 </template>
 
@@ -37,7 +37,6 @@ export default {
       startDate: "",
       endDate: "",
       orders: [],
-      ordersFiltered: [],
     };
   },
   created: function () {
@@ -66,8 +65,8 @@ export default {
         headers: { "content-type": "text/plain" },
       })
         .then((result) => {
-          this.ordersFiltered = result.data;
-          console.log(this.ordersFiltered);
+          this.orders = result.data;
+          console.log(this.orders);
           console.log(result.data);
         })
         .catch((error) => {

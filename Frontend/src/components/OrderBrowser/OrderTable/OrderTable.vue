@@ -49,6 +49,7 @@
         v-for="order in ordersDisplay"
         v-bind:key="order"
         :orderName="order.orderName"
+        :productName="order.productName"
         :customerName="order.customerName"
         :customerCompany="order.customerCompany"
         :orderDate="convertDate(order.orderDate)"
@@ -119,7 +120,8 @@ export default {
       this.ordersDisplay = this.orders.slice(startIndex, endIndex);
     },
     convertDate(value) {
-      return new Date(value);
+      var dateString = new Date(value).toString().slice(0, 25);
+      return dateString;
     },
   },
   created: function () {
