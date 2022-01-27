@@ -120,7 +120,9 @@ export default {
       this.ordersDisplay = this.orders.slice(startIndex, endIndex);
     },
     convertDate(value) {
-      var dateString = new Date(value).toString().slice(0, 25);
+      var dateString = new Date(value).toLocaleString("en-AU", {
+        timeZone: "Australia/Melbourne",
+      });
       return dateString;
     },
     countTotalAmount() {
