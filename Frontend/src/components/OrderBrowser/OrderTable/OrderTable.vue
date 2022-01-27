@@ -49,11 +49,11 @@
         v-for="order in ordersDisplay"
         v-bind:key="order"
         :orderName="order.orderName"
-        customerName="Sherry"
-        customerCompany="company"
-        :orderDate="order.orderDate"
-        :deliveredAmount="11.3"
-        :totalAmount="24"
+        :customerName="order.customerName"
+        :customerCompany="order.customerCompany"
+        :orderDate="convertDate(order.orderDate)"
+        :deliveredAmount="order.deliveredAmount"
+        :totalAmount="order.totalAmount"
       />
     </tbody>
   </table>
@@ -117,6 +117,9 @@ export default {
       var startIndex = this.ordersPerPage * (this.page - 1);
       var endIndex = this.ordersPerPage * this.page;
       this.ordersDisplay = this.orders.slice(startIndex, endIndex);
+    },
+    convertDate(value) {
+      return new Date(value);
     },
   },
   created: function () {
