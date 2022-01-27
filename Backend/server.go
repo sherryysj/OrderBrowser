@@ -5,7 +5,7 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -22,6 +22,20 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type Order struct {
+	OrderName       string  `json:"orderName"`
+	ProductName     string  `json:"productName"`
+	CustomerName    string  `json:"customerName"`
+	CustomerCompany string  `json:"customerCompany"`
+	OrderDate       string  `json:"orderDate"`
+	DeliveredAmount float32 `json:"deliveredAmount"`
+	TotalAmount     float32 `json:"totalAmount"`
+}
+
+type OrderArray struct {
+	orders []Order `json:"orders"`
+}
+
 func main() {
 	http.HandleFunc("/", filter)
 	http.ListenAndServe(":8090", nil)
@@ -34,20 +48,24 @@ func filter(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// process data pass from frent end
+	// improve below code by set json request from front end
 	data := strings.Split(string(body), ",")
 	search := data[0][2:(len(data[0]) - 1)]
 	startDate := data[1][1:(len(data[1]) - 1)]
 	endDate := data[2][1:(len(data[2]) - 2)]
 
-	retriveData(search, startDate, endDate)
+	dataRespond := retriveData(search, startDate, endDate)
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Hi there, I am the backend server for Order Browser %s", r.URL.Path[1:])
+	if err := json.NewEncoder(w).Encode(dataRespond); err != nil {
+		panic(err)
+	}
+
 }
 
-func retriveData(search string, startDate string, endDate string) {
+func retriveData(search string, startDate string, endDate string) []Order {
 
 	// read db connection credential from config file
 	postgresSQL, err := os.ReadFile("./config/postgresql.config")
@@ -83,7 +101,8 @@ func retriveData(search string, startDate string, endDate string) {
 	checkErr(err)
 
 	// set query string for sql database
-	queryString := "select A.customer_id, A.order_name, B.product, A.created_at, C.delivered_quantity*B.PRICE_PER_UNIT AS Deliveried_Amount, B.price_per_unit *B.quantity AS Total_Amount from orders A inner join order_items B on A.id=B.order_id inner join deliveries C on B.id=C.order_item_id"
+	queryString := "select A.customer_id, A.order_name, B.product, A.created_at, C.delivered_quantity*B.PRICE_PER_UNIT AS Deliveried_Amount, B.price_per_unit*B.quantity AS Total_Amount from orders A inner join order_items B on A.id=B.order_id inner join deliveries C on B.id=C.order_item_id"
+	//countString := "select count(*) from orders A inner join order_items B on A.id=B.order_id inner join deliveries C on B.id=C.order_item_id"
 
 	if search != "" {
 		searchString := "UPPER(A.order_name) LIKE Upper('%" + search + "%') or UPPER(B.product) LIKE Upper('%" + search + "%') "
@@ -105,10 +124,11 @@ func retriveData(search string, startDate string, endDate string) {
 	}
 
 	// get data from sql database for order info
+	orders := []Order{}
+
 	data, err := postgreDB.Query(queryString)
 	checkErr(err)
 
-	fmt.Print("get data back")
 	for data.Next() {
 		var customer_id string
 		var order_name string
@@ -138,9 +158,22 @@ func retriveData(search string, startDate string, endDate string) {
 		var customer_name = customer["name"].(string)
 		var customer_company = company["company_name"].(string)
 
-		fmt.Print(customer_name)
-		fmt.Print(customer_company)
+		// generate order object and add to data array
+		var order Order
+		order.OrderName = order_name
+		order.CustomerName = customer_name
+		order.CustomerCompany = customer_company
+		order.ProductName = product
+		order.OrderDate = created_at
+		order.DeliveredAmount = deliveried_amount
+		order.TotalAmount = total_amount
+
+		orders = append(orders, order)
+
 	}
+
+	return orders
+
 }
 
 func checkErr(err error) {
