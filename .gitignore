@@ -12,6 +12,10 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# credential files
+data
+config
+
 # for Frontend
 .DS_Store
 node_modules
