@@ -6,11 +6,9 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"io"
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -28,12 +26,14 @@ type Order struct {
 	CustomerName    string  `json:"customerName"`
 	CustomerCompany string  `json:"customerCompany"`
 	OrderDate       string  `json:"orderDate"`
-	DeliveredAmount float32 `json:"deliveredAmount"`
-	TotalAmount     float32 `json:"totalAmount"`
+	DeliveredAmount float64 `json:"deliveredAmount"`
+	TotalAmount     float64 `json:"totalAmount"`
 }
 
-type OrderArray struct {
-	orders []Order `json:"orders"`
+type requestData struct {
+	Search    string `json:"search"`
+	StartDate string `json:"startDate"`
+	EndDate   string `json:"endDate"`
 }
 
 func main() {
@@ -42,20 +42,17 @@ func main() {
 }
 
 func filter(w http.ResponseWriter, r *http.Request) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	// process data pass from frent end
-	// improve below code by set json request from front end
-	data := strings.Split(string(body), ",")
-	search := data[0][2:(len(data[0]) - 1)]
-	startDate := data[1][1:(len(data[1]) - 1)]
-	endDate := data[2][1:(len(data[2]) - 2)]
+	// process data pass from front end
+	decoder := json.NewDecoder(r.Body)
 
-	dataRespond := retriveData(search, startDate, endDate)
+	var data requestData
+	decoder.Decode(&data)
 
+	// retrive data from database
+	dataRespond := retriveData(data.Search, data.StartDate, data.EndDate)
+
+	// respond date to front end
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
@@ -147,8 +144,8 @@ func retriveData(search string, startDate string, endDate string) []Order {
 		var order_name string
 		var product string
 		var created_at string
-		var deliveried_amount float32
-		var total_amount float32
+		var deliveried_amount sql.NullFloat64
+		var total_amount sql.NullFloat64
 		err = data.Scan(&customer_id, &order_name, &product, &created_at, &deliveried_amount, &total_amount)
 
 		// get data from mongoDB database for customer info
@@ -178,8 +175,8 @@ func retriveData(search string, startDate string, endDate string) []Order {
 		order.CustomerCompany = customer_company
 		order.ProductName = product
 		order.OrderDate = created_at
-		order.DeliveredAmount = deliveried_amount
-		order.TotalAmount = total_amount
+		order.DeliveredAmount = deliveried_amount.Float64
+		order.TotalAmount = total_amount.Float64
 
 		orders = append(orders, order)
 
