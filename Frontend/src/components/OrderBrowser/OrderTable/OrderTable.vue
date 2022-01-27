@@ -120,7 +120,9 @@ export default {
       this.ordersDisplay = this.orders.slice(startIndex, endIndex);
     },
     convertDate(value) {
-      var dateString = new Date(value).toString().slice(0, 25);
+      var dateString = new Date(value).toLocaleString("en-AU", {
+        timeZone: "Australia/Melbourne",
+      });
       return dateString;
     },
     countTotalAmount() {
@@ -128,7 +130,7 @@ export default {
       for (let i = 0; i < this.orders.length; i++) {
         totalAmount += this.orders[i].totalAmount;
       }
-      return totalAmount;
+      return totalAmount.toFixed(4);
     },
   },
   created: function () {
