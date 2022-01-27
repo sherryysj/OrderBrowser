@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p id="total-amount">Total Amount: ${{ totalAmount }}</p>
+    <p id="total-amount">Total Amount: ${{ countTotalAmount() }}</p>
   </div>
   <table class="table table-striped table-sm" id="order-table">
     <thead>
@@ -73,14 +73,14 @@ export default {
   name: "OrderTable",
   props: {
     orders: Array,
+    totalAmount: Number,
   },
   data: function () {
     return {
       sortUp: true,
-      orderAmount: 100,
+      orderAmount: 0,
       page: 1,
       ordersPerPage: 5,
-      totalAmount: 100,
       ordersDisplay: [],
       orderSort: [],
     };
@@ -123,6 +123,13 @@ export default {
       var dateString = new Date(value).toString().slice(0, 25);
       return dateString;
     },
+    countTotalAmount() {
+      var totalAmount = 0;
+      for (let i = 0; i < this.orders.length; i++) {
+        totalAmount += this.orders[i].totalAmount;
+      }
+      return totalAmount;
+    },
   },
   created: function () {
     this.setOrdersDisplay();
@@ -138,7 +145,7 @@ export default {
 #order-table {
   width: 95%;
   margin: auto;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 #sortButton {
@@ -149,7 +156,7 @@ export default {
 #total-amount {
   text-align: left;
   margin-left: 50px;
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 0;
   font-weight: bold;
 }
