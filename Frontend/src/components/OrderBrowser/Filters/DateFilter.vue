@@ -48,7 +48,7 @@ export default {
 <style>
 #date-container {
   margin-top: 20px;
-  margin-left: 20px;
+  margin-left: 60px;
 }
 #date-title {
   width: 100px;

@@ -47,7 +47,8 @@ export default {
 <style>
 #search {
   align-items: center;
-  margin-left: 10px;
+  margin-left: 40px;
+  margin-right: 10px;
 }
 #search-icon {
   flex-grow: 0.01;
@@ -60,6 +61,6 @@ export default {
 }
 #search-input {
   flex-grow: 0.85;
-  width: 80%;
+  width: 400px;
 }
 </style>
