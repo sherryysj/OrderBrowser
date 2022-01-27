@@ -70,8 +70,6 @@ export default {
       })
         .then((result) => {
           this.orders = result.data;
-          console.log(this.orders);
-          console.log(result.data);
         })
         .catch((error) => {
           console.error(error);
