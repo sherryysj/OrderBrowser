@@ -28,8 +28,8 @@ type Order struct {
 	CustomerName    string  `json:"customerName"`
 	CustomerCompany string  `json:"customerCompany"`
 	OrderDate       string  `json:"orderDate"`
-	DeliveredAmount float32 `json:"deliveredAmount"`
-	TotalAmount     float32 `json:"totalAmount"`
+	DeliveredAmount float64 `json:"deliveredAmount"`
+	TotalAmount     float64 `json:"totalAmount"`
 }
 
 type OrderArray struct {
@@ -147,8 +147,8 @@ func retriveData(search string, startDate string, endDate string) []Order {
 		var order_name string
 		var product string
 		var created_at string
-		var deliveried_amount float32
-		var total_amount float32
+		var deliveried_amount sql.NullFloat64
+		var total_amount sql.NullFloat64
 		err = data.Scan(&customer_id, &order_name, &product, &created_at, &deliveried_amount, &total_amount)
 
 		// get data from mongoDB database for customer info
@@ -178,8 +178,8 @@ func retriveData(search string, startDate string, endDate string) []Order {
 		order.CustomerCompany = customer_company
 		order.ProductName = product
 		order.OrderDate = created_at
-		order.DeliveredAmount = deliveried_amount
-		order.TotalAmount = total_amount
+		order.DeliveredAmount = deliveried_amount.Float64
+		order.TotalAmount = total_amount.Float64
 
 		orders = append(orders, order)
 
