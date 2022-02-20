@@ -71,7 +71,7 @@ npm install
 npm run serve
 ```
 
-## What can be improved ( at this weekend )
+## What can be improved
 
 1. I use a function to auto-insert data from different files, so it is hard to configue which data are numbers and which are stings,
    this causes data inserted into MongoDB are all strings, I am still trying to find a way to convert data to proper type without
